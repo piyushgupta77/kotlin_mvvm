@@ -6,16 +6,12 @@ import com.kotlin.mykotlinproj.data.network.NetworkClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class GithubRepository {
-
-    companion object {
-        val INSTANCE: GithubRepository =
-            GithubRepository()
-    }
+class GithubRepository @Inject constructor(private val networkClient: NetworkClient) {
 
     fun getRepo(resultLambda: (success: Boolean, response: GitResponse?) -> Unit) {
-        NetworkClient().create(GithubApi::class.java).getRepo()
+        networkClient.create(GithubApi::class.java).getRepo()
             .enqueue(object : Callback<GitResponse> {
                 override fun onResponse(call: Call<GitResponse>, response: Response<GitResponse>) {
                     resultLambda(true, response.body()!!)

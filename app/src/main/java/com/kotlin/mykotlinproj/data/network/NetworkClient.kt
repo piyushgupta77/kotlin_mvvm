@@ -5,18 +5,12 @@ import com.kotlin.mykotlinproj.Constants
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
-class NetworkClient {
-
-    private var retrofit: Retrofit? = null
+class NetworkClient @Inject constructor(private val retrofit: Retrofit) {
 
     fun <T> create(api: Class<T>): T {
-        retrofit = Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(getOkHttpClient())
-            .build()
-        return retrofit!!.create(api)
+        return retrofit.create(api)
     }
 
     private fun getOkHttpClient(): OkHttpClient {
