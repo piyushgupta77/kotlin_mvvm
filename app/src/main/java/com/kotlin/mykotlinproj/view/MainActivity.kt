@@ -11,6 +11,9 @@ import com.kotlin.mykotlinproj.R
 import com.kotlin.mykotlinproj.databinding.ActivityMainBinding
 import com.kotlin.mykotlinproj.viewmodel.RepoViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -25,7 +28,10 @@ class MainActivity : AppCompatActivity() {
         viewBinding.viewmodel= ViewModelProvider(this).get(RepoViewModel::class.java)
 
         viewBinding.lifecycleOwner = this
-        viewBinding.viewmodel!!.getRepos()  //viewModel should never be null
+        // call co routine
+        GlobalScope.launch(Dispatchers.Main) {
+            viewBinding.viewmodel!!.getRepos()  //viewModel should never be null
+        }
 
         viewBinding.viewmodel?.resultItems?.observe(this, Observer {
             Log.d(TAG, "" + it.size)
