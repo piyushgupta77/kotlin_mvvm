@@ -1,6 +1,6 @@
 package com.kotlin.mykotlinproj.data.model
 
-data class Item(
+data class GitItem(
     val id: Int,
     val node_id: String,
     val name: String,

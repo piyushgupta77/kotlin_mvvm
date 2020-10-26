@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.kotlin.mykotlinproj.R
 import com.kotlin.mykotlinproj.databinding.ActivityMainBinding
 import com.kotlin.mykotlinproj.viewmodel.RepoViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -20,7 +22,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     private val TAG:String = "MainActivity"
-    private lateinit var viewBinding : ActivityMainBinding;
+    private lateinit var viewBinding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,10 @@ class MainActivity : AppCompatActivity() {
 
         viewBinding.viewmodel?.resultItems?.observe(this, Observer {
             Log.d(TAG, "" + it.size)
+            val layoutManager = LinearLayoutManager(this)
+            item_list.layoutManager = layoutManager
+            item_list.addItemDecoration(DividerItemDecoration(this, layoutManager.orientation))
+            item_list.adapter = RepoAdapter(it)
         })
 
         viewBinding.viewmodel?.isEmptyData?.observe(this, Observer {
